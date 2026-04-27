@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFA L1 Study Plan — Aug 2025</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #141414;
+    --surface2: #1a1a1a;
+    --border: #262626;
+    --gold: #c9a84c;
+    --gold-dim: #a07830;
+    --gold-glow: rgba(201,168,76,0.12);
+    --text: #e8e4dc;
+    --text-dim: #888;
+    --text-muted: #555;
+
+    --rebuild: #c9a84c;
+    --rebuild-bg: rgba(201,168,76,0.08);
+    --maintenance: #5b9bd5;
+    --maintenance-bg: rgba(91,155,213,0.08);
+    --mock: #c06060;
+    --mock-bg: rgba(192,96,96,0.08);
+    --ethics: #7db87d;
+    --ethics-bg: rgba(125,184,125,0.08);
+    --rest: #888;
+    --rest-bg: rgba(136,136,136,0.06);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    padding: 40px 24px 80px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    max-width: 900px;
+    margin: 0 auto 48px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .header h1 span { color: var(--gold); }
+
+  .header-sub {
+    font-size: 14px;
+    color: var(--text-dim);
+    font-weight: 400;
+    margin-top: 6px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    max-width: 900px;
+    margin: 0 auto 40px;
+    animation: fadeUp 0.7s ease both;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-bottom: 8px;
+  }
+
+  .progress-track {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+    border-radius: 2px;
+    width: 0%;
+    transition: width 0.6s ease;
+  }
+
+  /* ── LEGEND ── */
+  .legend {
+    max-width: 900px;
+    margin: 0 auto 36px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  .legend-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── PHASE CONTAINER ── */
+  .phases {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  /* ── PHASE BLOCK ── */
+  .phase {
+    animation: fadeUp 0.5s ease both;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .phase-header {
+    padding: 18px 24px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+
+  .phase-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+  }
+
+  .phase-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    flex: 1;
+  }
+
+  .phase-dates {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* ── WEEK ROWS ── */
+  .weeks { padding: 0; }
+
+  .week {
+    padding: 18px 24px;
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 16px;
+    align-items: start;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .week:last-child { border-bottom: none; }
+  .week:hover { background: var(--surface2); }
+
+  .week.done { opacity: 0.5; }
+  .week.done .week-label { text-decoration: line-through; color: var(--text-muted); }
+
+  .week-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    padding-top: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  .week-content { display: flex; flex-direction: column; gap: 8px; }
+
+  .week-title {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .check {
+    width: 16px; height: 16px;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .week.done .check {
+    background: var(--gold);
+    border-color: var(--gold);
+  }
+
+  .week.done .check::after {
+    content: '✓';
+    font-size: 10px;
+    color: #000;
+    font-weight: 700;
+  }
+
+  /* ── TAGS ── */
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; }
+
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+  }
+
+  .tag-rebuild   { background: var(--rebuild-bg);     color: var(--rebuild);     border: 1px solid rgba(201,168,76,0.2); }
+  .tag-maint     { background: var(--maintenance-bg); color: var(--maintenance); border: 1px solid rgba(91,155,213,0.2); }
+  .tag-mock      { background: var(--mock-bg);        color: var(--mock);        border: 1px solid rgba(192,96,96,0.2); }
+  .tag-ethics    { background: var(--ethics-bg);      color: var(--ethics);      border: 1px solid rgba(125,184,125,0.2); }
+  .tag-rest      { background: var(--rest-bg);        color: var(--rest);        border: 1px solid rgba(136,136,136,0.15); }
+
+  /* ── NOTES / TIPS ── */
+  .week-note {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 400;
+    line-height: 1.5;
+    padding-left: 2px;
+  }
+
+  /* ── TIP BOX ── */
+  .tip-box {
+    max-width: 900px;
+    margin: 40px auto 0;
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 12px;
+    padding: 24px 28px;
+    background: var(--gold-glow);
+    animation: fadeUp 0.9s ease both;
+  }
+
+  .tip-box-header {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .tip-box ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+
+  .tip-box li {
+    font-size: 13px;
+    color: var(--text-dim);
+    line-height: 1.6;
+    padding-left: 16px;
+    position: relative;
+  }
+
+  .tip-box li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold-dim);
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* ── STATS ROW ── */
+  .stats {
+    max-width: 900px;
+    margin: 0 auto 36px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    animation: fadeUp 0.75s ease both;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+  }
+
+  .stat-val {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* stagger phases */
+  .phase:nth-child(1) { animation-delay: 0.1s; }
+  .phase:nth-child(2) { animation-delay: 0.2s; }
+  .phase:nth-child(3) { animation-delay: 0.3s; }
+  .phase:nth-child(4) { animation-delay: 0.4s; }
+  .phase:nth-child(5) { animation-delay: 0.5s; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-eyebrow">CFA Level I · Second Attempt</div>
+  <h1>Study Plan<br><span>May → August 2025</span></h1>
+  <div class="header-sub">Personalised for weak-topic rebuild + spaced maintenance · Exam ~14 Aug</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>Overall Progress</span>
+    <span id="pct">0%</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" id="bar"></div>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="stat-card">
+    <div class="stat-val">15</div>
+    <div class="stat-label">Weeks Total</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val">7</div>
+    <div class="stat-label">Rebuild Weeks</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val">5</div>
+    <div class="stat-label">Consolidation Wks</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val">3</div>
+    <div class="stat-label">Mock + Final Weeks</div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-val">5+</div>
+    <div class="stat-label">Hrs / Day</div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--rebuild)"></div>Deep Rebuild</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--maintenance)"></div>Maintenance / Q-Bank</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--ethics)"></div>Ethics Intensive</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--mock)"></div>Mock Exams</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--rest)"></div>Light / Buffer</div>
+</div>
+
+<div class="phases" id="phases">
+
+  <!-- PHASE 1 -->
+  <div class="phase">
+    <div class="phase-header">
+      <span class="phase-num">PHASE 01</span>
+      <span class="phase-title">Fixed Income Completion + Maintenance Kickoff</span>
+      <span class="phase-dates">Now → 1 May</span>
+    </div>
+    <div class="weeks">
+      <div class="week" data-id="w0">
+        <div class="week-label">Ongoing</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>Fixed Income — finish all readings</div>
+          <div class="tags"><span class="tag tag-rebuild">Deep Rebuild</span></div>
+          <div class="week-note">Complete all FI readings end-to-end. Don't skip practice Qs after each reading. Target: finish by 1 May.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE 2 -->
+  <div class="phase">
+    <div class="phase-header">
+      <span class="phase-num">PHASE 02</span>
+      <span class="phase-title">Derivatives + Equity Rebuild</span>
+      <span class="phase-dates">2 May — 29 May</span>
+    </div>
+    <div class="weeks">
+
+      <div class="week" data-id="w1">
+        <div class="week-label">Wk 1 · 2–8 May</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>Derivatives — Part 1 (Forwards, Futures, Swaps)</div>
+          <div class="tags">
+            <span class="tag tag-rebuild">Deep Rebuild</span>
+            <span class="tag tag-maint">Maintenance: Quants</span>
+          </div>
+          <div class="week-note">Mon–Thu: 4 hrs Derivatives study + 1 hr practice Qs per day. Fri–Sun: 1 maintenance session (15–20 Quants q-bank questions, timed). Review errors only — don't re-read Quants.</div>
+        </div>
+      </div>
+
+      <div class="week" data-id="w2">
+        <div class="week-label">Wk 2 · 9–15 May</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>Derivatives — Part 2 (Options, Greeks, Strategies) + FI Q-Bank blitz</div>
+          <div class="tags">
+            <span class="tag tag-rebuild">Deep Rebuild</span>
+            <span class="tag tag-maint">Maintenance: Economics</span>
+          </div>
+          <div class="week-note">Mon–Thu: Finish Derivatives. Fri: 30-question timed FI q-bank (reinforcement before it fades). Weekend: 20-question Economics maintenance session.</div>
+        </div>
+      </div>
+
+      <div class="week" data-id="w3">
+        <div class="week-label">Wk 3 · 16–22 May</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>Equity — Targeted Rebuild (Valuation Models, DDM, Multiples)</div>
+          <div class="tags">
+            <span class="tag tag-rebuild">Deep Rebuild</span>
+            <span class="tag tag-maint">Maintenance: Derivatives review</span>
+          </div>
+          <div class="week-note">Equity is slightly below avg, so 1 dedicated week. Focus on valuation models (DDM, FCFE, EV multiples) — these are highest-yield. End of week: 20-question Derivatives q-bank to lock in what you just studied.</div>
+        </div>
+      </div>
+
+      <div class="week" data-id="w4">
+        <div class="week-label">Wk 4 · 23–29 May</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>Equity — Industry Analysis, ESG, Wrap-up + Error Review</div>
+          <div class="tags">
+            <span class="tag tag-rebuild">Deep Rebuild</span>
+            <span class="tag tag-maint">Maintenance: Portfolio Mgmt + Alt Inv</span>
+          </div>
+          <div class="week-note">Complete Equity. Spend the last 1–2 days reviewing all error-log notes from Derivatives and Equity. Maintenance session: Portfolio Management + Alternative Investments (15 Qs each, timed).</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 3 -->
+  <div class="phase">
+    <div class="phase-header">
+      <span class="phase-num">PHASE 03</span>
+      <span class="phase-title">FSA — The Big Rebuild</span>
+      <span class="phase-dates">30 May — 19 Jun</span>
+    </div>
+    <div class="weeks">
+
+      <div class="week" data-id="w5">
+        <div class="week-label">Wk 5 · 30 May–5 Jun</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>FSA Part 1 — Financial Statements, Income Statement, Balance Sheet</div>
+          <div class="tags">
+            <span class="tag tag-rebuild">Deep Rebuild</span>
+            <span class="tag tag-maint">Maintenance: FI q-bank</span>
+          </div>
+          <div class="week-note">FSA is your biggest topic — treat it like a new subject. Focus on understanding the logic behind adjustments, not memorising. Weekend maintenance: 25-question FI q-bank (FI will start to fade by now).</div>
+        </div>
+      </div>
+
+      <div class="week" data-id="w6">
+        <div class="week-label">Wk 6 · 6–12 Jun</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>FSA Part 2 — Cash Flow Statement, Intercorporate Investments</div>
+          <div class="tags">
+            <span class="tag tag-rebuild">Deep Rebuild</span>
+            <span class="tag tag-maint">Maintenance: Quants + Eco</span>
+          </div>
+          <div class="week-note">Cash flows and intercorporate investments are high-frequency exam areas. Build a one-page cheat sheet of adjustments as you go. Weekend: 15 Quants + 15 Eco q-bank (both can fade fast for you — keep them warm).</div>
+        </div>
+      </div>
+
+      <div class="week" data-id="w7">
+        <div class="week-label">Wk 7 · 13–19 Jun</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>FSA Part 3 — Long-lived Assets, Leases, Employee Benefits, Taxes</div>
+          <div class="tags">
+            <span class="tag tag-rebuild">Deep Rebuild</span>
+            <span class="tag tag-maint">Maintenance: Equity q-bank</span>
+          </div>
+          <div class="week-note">These FSA sub-topics (especially taxes and leases) are notorious for confusion — go slowly and work through every numerical example. Weekend maintenance: 20-question Equity q-bank to keep those models fresh.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 4 -->
+  <div class="phase">
+    <div class="phase-header">
+      <span class="phase-num">PHASE 04</span>
+      <span class="phase-title">Full Consolidation + Ethics Intensive</span>
+      <span class="phase-dates">20 Jun — 24 Jul</span>
+    </div>
+    <div class="weeks">
+
+      <div class="week" data-id="w8">
+        <div class="week-label">Wk 8 · 20–26 Jun</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>FSA Review + All Weak Topics Error Log Sweep</div>
+          <div class="tags">
+            <span class="tag tag-maint">Consolidation</span>
+            <span class="tag tag-maint">Maintenance: Derivatives</span>
+          </div>
+          <div class="week-note">Go through every error you've logged since May 1. Rework the questions you got wrong — don't just re-read. This week is the most important memory-consolidation week. Also: 20-question Derivatives q-bank.</div>
+        </div>
+      </div>
+
+      <div class="week" data-id="w9">
+        <div class="week-label">Wk 9 · 27 Jun–3 Jul</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>Mixed Topic Q-Bank Week (All Topics, Timed)</div>
+          <div class="tags">
+            <span class="tag tag-maint">Full Rotation</span>
+            <span class="tag tag-maint">Maintenance: FI + FSA</span>
+          </div>
+          <div class="week-note">No new reading. Every day: pick 2 topics, do 20–30 timed questions each, review errors. Rotate through FI, Derivatives, FSA, Equity, Quants, Eco, Corp Finance. This is spaced retrieval in action.</div>
+        </div>
+      </div>
+
+      <div class="week" data-id="w10">
+        <div class="week-label">Wk 10 · 4–10 Jul</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>Ethics — Full Intensive (Standards I–VII, GIPS)</div>
+          <div class="tags">
+            <span class="tag tag-ethics">Ethics Intensive</span>
+            <span class="tag tag-maint">Maintenance: Quants + Eco</span>
+          </div>
+          <div class="week-note">Ethics gets its own dedicated week. Read every standard with examples. The application Qs are tricky — focus on the grey areas and conflicts of interest. Don't memorise definitions, understand the intent behind each standard. Weekend: Quants + Eco 20 Qs each.</div>
+        </div>
+      </div>
+
+      <div class="week" data-id="w11">
+        <div class="week-label">Wk 11 · 11–17 Jul</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>Ethics Practice + All Weak Topics Final Q-Bank Blitz</div>
+          <div class="tags">
+            <span class="tag tag-ethics">Ethics Practice</span>
+            <span class="tag tag-rebuild">Weak Topic Blitz</span>
+          </div>
+          <div class="week-note">Mon–Wed: Ethics practice Qs, 40+ questions. Thu–Sun: one final high-volume q-bank session for each of FSA, FI, Derivatives, Equity (30 Qs each, timed, simulate exam conditions).</div>
+        </div>
+      </div>
+
+      <div class="week" data-id="w12">
+        <div class="week-label">Wk 12 · 18–24 Jul</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>Mock Exam #1 (Full Paper) + Detailed Review</div>
+          <div class="tags">
+            <span class="tag tag-mock">Mock Exam</span>
+          </div>
+          <div class="week-note">Take a full 180-question mock under real exam conditions (timed, no interruptions). Spend 2 full days reviewing every wrong answer — identify if it's a knowledge gap or a time-management issue. Don't move on until you understand why each error happened.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PHASE 5 -->
+  <div class="phase">
+    <div class="phase-header">
+      <span class="phase-num">PHASE 05</span>
+      <span class="phase-title">Final Push — Mocks, Targeted Fixes, Exam</span>
+      <span class="phase-dates">25 Jul — 14 Aug</span>
+    </div>
+    <div class="weeks">
+
+      <div class="week" data-id="w13">
+        <div class="week-label">Wk 13 · 25–31 Jul</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>Mock Exam #2 + Fix Weak Areas from Mock #1</div>
+          <div class="tags">
+            <span class="tag tag-mock">Mock Exam</span>
+            <span class="tag tag-rebuild">Targeted Fixes</span>
+          </div>
+          <div class="week-note">Take Mock #2 on Monday or Tuesday. Spend remaining days doing targeted re-study only on whatever Mock #1 and #2 revealed as still weak. No broad re-reading — surgical fixes only.</div>
+        </div>
+      </div>
+
+      <div class="week" data-id="w14">
+        <div class="week-label">Wk 14 · 1–7 Aug</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>Mock Exam #3 + Ethics Final Pass + Rapid-Fire Q-Bank</div>
+          <div class="tags">
+            <span class="tag tag-mock">Mock Exam</span>
+            <span class="tag tag-ethics">Ethics Final</span>
+          </div>
+          <div class="week-note">Third mock early in the week. Ethics: re-read your cheat sheet and do 30+ practice Qs. Rapid-fire q-bank for all topics (10–15 Qs per topic, timed) to stay sharp across the board.</div>
+        </div>
+      </div>
+
+      <div class="week" data-id="w15">
+        <div class="week-label">Wk 15 · 8–13 Aug</div>
+        <div class="week-content">
+          <div class="week-title"><div class="check"></div>Final Week — Light Review, Formula Sheet, Rest</div>
+          <div class="tags">
+            <span class="tag tag-rest">Wind Down</span>
+            <span class="tag tag-ethics">Ethics Refresh</span>
+          </div>
+          <div class="week-note">No new material. Review your formula sheet and error log daily. Do 20 mixed Qs per day max — just to stay in rhythm, not to grind. Stop studying by the evening of Aug 13. Sleep, eat well, and go in fresh.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- TIP BOX -->
+<div class="tip-box">
+  <div class="tip-box-header">⟡ Strategy Notes for Your Profile</div>
+  <ul>
+    <li>Since you're forgetful, the weekly maintenance q-bank sessions aren't optional — they're the most important thing here. Even 15 questions on a strong topic does more than re-reading it.</li>
+    <li>Keep a running error log (a simple notes doc is fine). Every time you get something wrong, write down WHY — wrong concept, misread the question, or calculation error. Review this log weekly.</li>
+    <li>For FSA: build a one-page adjustments cheat sheet as you study each sub-topic. Reviewing this one page every few days costs 5 minutes and significantly slows forgetting.</li>
+    <li>Don't take all 3 mocks back-to-back without recovery time. Space them out and genuinely review before moving to the next one — mocks without review are almost worthless.</li>
+    <li>Ethics tends to be the tiebreaker at the borderline. The CFA Institute has historically given benefit of the doubt to candidates who score well in Ethics, so treat it as a priority, not an afterthought.</li>
+    <li>If you find a week going off-track, don't abandon the plan — just compress. Cut maintenance from 20 Qs to 10, but never skip it entirely.</li>
+  </ul>
+</div>
+
+<script>
+  // Checkbox toggle
+  document.querySelectorAll('.week').forEach(function(week) {
+    week.addEventListener('click', function(e) {
+      week.classList.toggle('done');
+      updateProgress();
+    });
+  });
+
+  function updateProgress() {
+    var total = document.querySelectorAll('.week').length;
+    var done  = document.querySelectorAll('.week.done').length;
+    var pct   = Math.round((done / total) * 100);
+    document.getElementById('bar').style.width = pct + '%';
+    document.getElementById('pct').textContent  = pct + '%';
+  }
+
+  updateProgress();
+</script>
+</body>
+</html>
